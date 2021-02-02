@@ -52,7 +52,6 @@ class _HeaderWithSearchBoxState extends State<HeaderWithSearchBox> {
                 bottomRight: Radius.circular(36),
               ),
             ),
-
              */
           ),
           Container(
@@ -206,4 +205,3 @@ class PersistentHeader extends SliverPersistentHeaderDelegate {
 //      ],
 //    );
 //  }
-

@@ -71,5 +71,3 @@ class _WordState extends State<Word> {
   }
 
 }
-
-
