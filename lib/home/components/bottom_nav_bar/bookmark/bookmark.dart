@@ -1,50 +1,70 @@
 import 'package:flutter/material.dart';
-//import 'words.dart';
 import 'package:flip_card/flip_card.dart';
-import 'package:ForLingo/global.dart' as globals;
-import 'package:ForLingo/vocab.dart';
+import 'package:ForLingo/models/vocab.dart';
+import 'package:ForLingo/vocabs_interface.dart' as vs;
+
+class FlashCardFuture extends StatefulWidget {
+  @override
+  _FlashCardFutureState createState() => _FlashCardFutureState();
+}
+
+class _FlashCardFutureState extends State<FlashCardFuture> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Vocab>>(
+      future: vs.future,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return FlashCard(snapshot.data);
+        } else {
+          return Center(
+            child: Text(
+              "Loading....",
+              style: TextStyle(fontSize: 40),
+            ),
+          );
+        }
+      },
+    );
+  }
+}
 
 class FlashCard extends StatefulWidget {
-
+  final List<Vocab> myWordlist;
+  FlashCard(this.myWordlist);
   @override
   _FlashCardState createState() => _FlashCardState();
 }
 
 class _FlashCardState extends State<FlashCard> {
-  /*List<Words> words = [
-    Words(
-      word: 'Hello',
-      meaning: 'Greeting',
-      sentence: 'Hello World',
-    ),
-    Words(
-      word: 'World',
-      meaning: 'Surroundings',
-      sentence: 'World Wide Web',
-    ),
-    Words(
-      word: 'Flutter',
-      meaning: 'Dart Framework',
-      sentence: 'Flutter is great',
-    ),
-  ];*/
   int currWordIndex = 0;
   int totalWords = 0;
   int diffKey = 0;
   Widget flashcard;
-  List<Vocab> wordlist;
-  _FlashCardState(){
-    wordlist = List.from(globals.words);
-  }
+  List<Vocab> wordlist = List();
+  // void _loadData() async {
+  //   this.wordlist = await DBInteract.getAllVocabs(isSorted: false);
+  //   //wordlist = await vs.future;
+  // }
 
   @override
   void initState() {
     super.initState();
-    totalWords = globals.length();
-    flashcard = FlashCardContent(
-      currWords: wordlist[currWordIndex],
-      key: ValueKey(diffKey),
-    );
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   //_loadData();
+    // });
+    wordlist = widget.myWordlist;
+    print("Wordlist: $wordlist");
+    totalWords = wordlist.length;
+    if (totalWords != 0) {
+      // this mean that user have some words to learn
+      flashcard = FlashCardContent(
+        currWords: wordlist[currWordIndex],
+        key: ValueKey(diffKey),
+      );
+    } else {
+      flashcard = Text('Please add some words');
+    }
   }
 
   // this function is called to change the diffKey so that
@@ -243,16 +263,22 @@ class NumberQuestion extends StatefulWidget {
 class _NumberQuestionState extends State<NumberQuestion> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: AlignmentDirectional.center,
-      children: <Widget>[
-        CircularProgressIndicator(
-          value: widget.numQuesLeft / widget.totalNumQuest,
-          backgroundColor: Colors.grey.shade700,
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.blue[200]),
-        ),
-        Text('${widget.numQuesLeft}'),
-      ],
-    );
+    if (widget.totalNumQuest != 0) {
+      // if user have some words, display circular progress bar
+      // else, return empty SizedBox(which display nothing)
+      return Stack(
+        alignment: AlignmentDirectional.center,
+        children: <Widget>[
+          CircularProgressIndicator(
+            value: widget.numQuesLeft / widget.totalNumQuest,
+            backgroundColor: Colors.grey.shade700,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue[200]),
+          ),
+          Text('${widget.numQuesLeft}'),
+        ],
+      );
+    } else {
+      return SizedBox();
+    }
   }
 }

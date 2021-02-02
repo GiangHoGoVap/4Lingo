@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'bookmark/bookmark.dart';
-import '../word/wordpage.dart';
+import 'bookmark/statics.dart';
 
 class MyBottomNavBar extends StatelessWidget {
   const MyBottomNavBar({
@@ -27,20 +27,8 @@ class MyBottomNavBar extends StatelessWidget {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          IconButton(
-            icon: Icon(
-              FontAwesome5.file_word,
-              color: Colors.blue,
-            ),
-            onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => Word()),
-              // );
-            },
-          ),
           IconButton(
             icon: Icon(
               FontAwesome5.bookmark,
@@ -51,7 +39,7 @@ class MyBottomNavBar extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FlashCard(),
+                  builder: (context) => FlashCardFuture(),
                 ),
               );
             },
@@ -62,6 +50,12 @@ class MyBottomNavBar extends StatelessWidget {
               color: Colors.blue,
             ),
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Thongke(),
+                ),
+              );
               //Statistic popup
             },
           ),
