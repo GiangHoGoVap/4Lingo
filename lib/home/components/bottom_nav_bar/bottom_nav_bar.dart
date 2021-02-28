@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'bookmark/bookmark.dart';
 import 'bookmark/statics.dart';
+import 'package:ForLingo/models/vocabs_interface.dart' as vs;
+import 'package:ForLingo/db/interact_with_db.dart';
 
 class MyBottomNavBar extends StatelessWidget {
   const MyBottomNavBar({
@@ -35,6 +37,7 @@ class MyBottomNavBar extends StatelessWidget {
               color: Colors.blue,
             ),
             onPressed: () {
+              vs.future = DBInteract.getAllVocabs();
               //Bookmark popup
               Navigator.push(
                 context,
@@ -49,7 +52,7 @@ class MyBottomNavBar extends StatelessWidget {
               FontAwesome5.chart_line,
               color: Colors.blue,
             ),
-            onPressed: () {
+            onPressed: () async {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -59,6 +62,12 @@ class MyBottomNavBar extends StatelessWidget {
               //Statistic popup
             },
           ),
+          // IconButton(
+          //   icon: Icon(Icons.accessibility),
+          //   onPressed: () {
+          //     notify.notifyCenter.listAll();
+          //   },
+          // ),
         ],
       ),
     );
